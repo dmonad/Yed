@@ -1,0 +1,41 @@
+{
+  "name": "yed",
+  "version": "1.0.0",
+  "description": "Yet another editor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "npm run dist:css && npm run dist:css-min",
+    "dist:css": "cleancss --format beautify -o dist/style.css src/style.css",
+    "dist:css-min": "cleancss -O2 -o dist/style.min.css src/style.css"
+  },
+  "keywords": [
+    "editor",
+    "prosemirror",
+    "yjs"
+  ],
+  "author": "Kevin Jahns <kevin.jahns@pm.me>",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "^4.3.0",
+    "rollup": "^1.22.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-css-porter": "^1.0.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "y-prosemirror": "^0.1.3",
+    "y-protocols": "^0.1.0",
+    "y-websocket": "^1.0.4",
+    "yjs": "^13.0.0-99"
+  },
+  "dependencies": {
+    "prosemirror-commands": "^1.0.8",
+    "prosemirror-example-setup": "^1.0.1",
+    "prosemirror-inputrules": "^1.0.4",
+    "prosemirror-keymap": "^1.0.1",
+    "prosemirror-model": "^1.7.2",
+    "prosemirror-state": "^1.2.4",
+    "prosemirror-view": "^1.11.4"
+  }
+}
