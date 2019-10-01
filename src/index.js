@@ -15,6 +15,8 @@ import { inputrules } from './inputrules.js'
 
 export { undo, redo }
 
+import { actions } from './actions.js'
+
 /**
  * @typedef {object} YedPluginOptions
  * @property {Array<Node>} [YedPluginOptions.nodes]
@@ -33,6 +35,7 @@ class YedPlugin {
  * @property {Y.XmlFragment} YedOptions.type
  * @property {Awareness} YedOptions.awareness
  * @property {Element} [YedOptions.container]
+ * @property {Element} [YedOptions.toolbar]
  * @property {Array<YedPlugin>} [YedOptions.plugins]
  */
 
@@ -40,12 +43,8 @@ export class Yed {
   /**
    * @param {YedOptions} options
    */
-  constructor ({ type, awareness, container = dom.element('div') , plugins = [] }) {
-    /**
-     * @type {Element}
-     */
-    this.container = container
-    this.view = new EditorView(container, {
+  constructor ({ type, awareness, container = dom.element('div') , plugins = [], toolbar = dom.element('div') }) {
+    const view = new EditorView(container, {
       attributes: {
         class: 'yed'
       },
@@ -63,5 +62,21 @@ export class Yed {
         ]
       })
     })
+    toolbar.addEventListener('click', event => {
+      if (event.target) {
+        const actionName = /** @type {Element} */ (event.target).getAttribute('yed-action')
+        const action = actions[actionName]
+        if (action) {
+          action(view.state, view.dispatch)
+          view.focus()
+        }
+      }
+    })
+    /**
+     * @type {Element}
+     */
+    this.container = container
+    this.toolbar = toolbar
+    this.view = view
   }
 }
