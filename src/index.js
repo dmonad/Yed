@@ -13,22 +13,17 @@ import { dropCursor } from 'prosemirror-dropcursor'
 import { gapCursor } from 'prosemirror-gapcursor'
 import { inputrules } from './inputrules.js'
 
-export { undo, redo }
+import * as object from 'lib0/object.js'
 
 import { actions } from './actions.js'
+import { YedPlugin, CreateNodeViewFunction } from './plugins/YedPlugin.js'
+import { codeblockPlugin } from './plugins/codeblock/codeblock.js'
 
-/**
- * @typedef {object} YedPluginOptions
- * @property {Array<Node>} [YedPluginOptions.nodes]
- * @property {Array<Mark>} [YedPluginOptions.marks]
- */
+const defaultPlugins = [
+  codeblockPlugin
+]
 
-class YedPlugin {
-  constructor ({ marks = [], nodes = [] }) {
-    this.nodes = nodes
-    this.marks = marks
-  }
-}
+export { undo, redo }
 
 /**
  * @typedef {object} YedOptions
@@ -43,24 +38,36 @@ export class Yed {
   /**
    * @param {YedOptions} options
    */
-  constructor ({ type, awareness, container = dom.element('div') , plugins = [], toolbar = dom.element('div') }) {
+  constructor ({ type, awareness, container = dom.element('div'), toolbar = dom.element('div') }) {
+    const plugins = [
+      ySyncPlugin(type),
+      yCursorPlugin(awareness),
+      yUndoPlugin(),
+      keymap(keymaps),
+      inputrules,
+      keymap(baseKeymap),
+      dropCursor(),
+      gapCursor()
+    ]
+    /** 
+     * @type {Object<string,CreateNodeViewFunction>}
+     */
+    const nodeViews = {}
+    defaultPlugins.forEach(plug => {
+      plug.plugins.forEach(pmPlug => plugins.push(pmPlug))
+      object.forEach(plug.nodeViews, (createView, name) => {
+        nodeViews[name] = createView
+      })
+    })
     const view = new EditorView(container, {
       attributes: {
         class: 'yed'
       },
       state: EditorState.create({
         schema,
-        plugins: [
-          ySyncPlugin(type),
-          yCursorPlugin(awareness),
-          yUndoPlugin(),
-          keymap(keymaps),
-          inputrules,
-          keymap(baseKeymap),
-          dropCursor(),
-          gapCursor()
-        ]
-      })
+        plugins
+      }),
+      nodeViews
     })
     toolbar.addEventListener('click', event => {
       if (event.target) {

@@ -11,7 +11,8 @@ const type = /** @type {Y.XmlFragment} */ (ydoc.get('prosemirror', Y.XmlFragment
 
 const yed = new Yed({
   container: /** @type {Element} */ (dom.getElementById('editor')),
-  type, awareness: provider.awareness,
+  type,
+  awareness: provider.awareness,
   toolbar: /** @type {Element} */ (dom.getElementById('toolbar'))
 })
 

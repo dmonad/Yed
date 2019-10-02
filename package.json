@@ -15,10 +15,20 @@
     "prosemirror",
     "yjs"
   ],
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules",
+      "/docs"
+    ]
+  },
   "author": "Kevin Jahns <kevin.jahns@pm.me>",
   "license": "MIT",
   "devDependencies": {
+    "@types/prosemirror-model": "^1.7.2",
+    "@types/prosemirror-state": "^1.2.3",
     "clean-css-cli": "^4.3.0",
+    "codemirror": "^5.49.0",
     "concurrently": "^4.1.2",
     "rollup": "^1.22.0",
     "rollup-plugin-commonjs": "^10.1.0",

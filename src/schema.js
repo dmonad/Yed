@@ -61,7 +61,7 @@ export const nodes = {
     toDOM (node) { return ['h' + node.attrs.level, calcYchangeDomAttrs(node.attrs), 0] }
   },
 
-  code_block: {
+  codeblock: {
     attrs: { ychange },
     content: 'text*',
     marks: '',
