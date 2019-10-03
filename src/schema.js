@@ -163,4 +163,5 @@ export const marks = {
   }
 }
 
+// @ts-ignore
 export const schema = new Schema({ nodes, marks })

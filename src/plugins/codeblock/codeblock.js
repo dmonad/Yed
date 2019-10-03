@@ -26,7 +26,8 @@ export class CodeBlockView {
     this.cm = new CodeMirror(null, {
       value: this.node.textContent,
       lineNumbers: true,
-      extraKeys: this.codeMirrorKeymap()
+      extraKeys: this.codeMirrorKeymap(),
+      viewportMargin: Infinity
     })
 
     // The editor's outer node is our DOM representation

@@ -4,7 +4,7 @@ import { NodeView, EditorView } from 'prosemirror-view'
 
 /**
  * @callback CreateNodeViewFunction
- * @param {ProsemirrorNode} node
+ * @param {Node} node
  * @param {EditorView} view
  * @param {boolean|function():number} getPos
  */

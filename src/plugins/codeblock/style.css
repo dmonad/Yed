@@ -1,5 +1,5 @@
 @import url('../../../node_modules/codemirror/lib/codemirror.css');
 
-.yed pre {
-  background-color: grey;
+.yed .CodeMirror {
+  height: auto;
 }
