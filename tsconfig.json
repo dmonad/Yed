@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "target": "es2018",
+    "module": "esNext",
+    "target": "esnext",
     "lib": ["es2018", "dom"],                             /* Specify library files to be included in the compilation. */
     "allowJs": true,                       /* Allow javascript files to be compiled. */
     "checkJs": true,                       /* Report errors in .js files. */

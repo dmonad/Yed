@@ -94,8 +94,8 @@ const plugins = [
 export default [{
   input: './demo/index.js',
   output: {
-    file: 'dist/demo.js',
-    format: 'iife',
+    dir: 'dist',
+    format: 'esm',
     sourcemap: true,
     globals: {
       'crypto': 'null'

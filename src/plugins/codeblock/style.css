@@ -2,4 +2,43 @@
 
 .yed .CodeMirror {
   height: auto;
+  border: 1px solid red;
+}
+
+.yed-codeblock-language-selector {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5em;
+  height: 1.5em;
+  z-index: 2;
+}
+
+.yed-codeblock-language-selector > input, .yed-codeblock-selected-language {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5em;
+  height: 1.5em;
+  margin: 0;
+  display: block;
+}
+
+.yed-codeblock-language-selector > input {
+  opacity: 0;
+  z-index: 4;
+}
+
+.yed-codeblock-language-selector > input:checked ~ div {
+  background-color: blue;
+}
+
+.yed-codeblock-languages {
+  position: absolute;
+  top: 1.5em;
+  right: 0;
+}
+
+.yed-codeblock-selected-language {
+
 }

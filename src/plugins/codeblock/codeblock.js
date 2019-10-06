@@ -8,11 +8,16 @@ import { EditorView } from 'prosemirror-view'
 import { DOMParser } from 'prosemirror-model'
 import { exampleSetup } from 'prosemirror-example-setup'
 
+import * as dom from 'lib0/dom.js'
+import * as pair from 'lib0/pair.js'
+
 import CodeMirror from 'codemirror'
-import 'codemirror/mode/javascript/javascript'
 
 import { schema } from '../../schema.js'
 import { createYedPlugin } from '../YedPlugin.js'
+
+import('codemirror/mode/javascript/javascript.js')
+import('codemirror/mode/markdown/markdown.js')
 
 export class CodeBlockView {
   constructor (node, view, getPos) {
@@ -27,11 +32,31 @@ export class CodeBlockView {
       value: this.node.textContent,
       lineNumbers: true,
       extraKeys: this.codeMirrorKeymap(),
-      viewportMargin: Infinity
+      viewportMargin: Infinity,
+      mode: 'javascript'
     })
 
     // The editor's outer node is our DOM representation
     this.dom = this.cm.getWrapperElement()
+    this.languageSelector = dom.element('div', [pair.create('class', 'yed-codeblock-language-selector')], [
+      dom.element('label', [], [
+        dom.text('Language'),
+        dom.element('input', [pair.create('placeholder', 'none'), pair.create('value', ''), pair.create('list', 'yed-codeblock-languages'), pair.create('name', 'codeblock-language')])
+      ]),
+      dom.element('datalist', [pair.create('id', 'yed-codeblock-languages')], [
+        dom.element('option', [pair.create('value', ' ')], [dom.text('None')]),
+        dom.element('option', [pair.create('value', 'javascript')], [dom.text('Javascript')]),
+        dom.element('option', [pair.create('value', 'markdown')], [dom.text('Markdown')]),
+        dom.element('option', [pair.create('value', 'clike')], [dom.text('C / C++')]),
+        dom.element('option', [pair.create('value', 'php')], [dom.text('PHP')]),
+        dom.element('option', [pair.create('value', 'htmlmixed')], [dom.text('HTML')]),
+      ])
+    ])
+    dom.append(this.dom, [this.languageSelector])
+    this.languageSelector.querySelector('input').addEventListener('change', ev => {
+      const lang = ev.target.value
+      this.cm.setOption('mode', lang)
+    })
     // CodeMirror needs to be in the DOM to properly initialize, so
     // schedule it to update itself
     setTimeout(() => this.cm.refresh(), 20)
