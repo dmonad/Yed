@@ -92,7 +92,7 @@ const plugins = [
 ]
 
 export default [{
-  input: './demo/index.js',
+  input: './demo/demo.js',
   output: {
     dir: 'dist',
     format: 'esm',

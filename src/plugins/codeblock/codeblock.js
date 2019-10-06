@@ -16,8 +16,31 @@ import CodeMirror from 'codemirror'
 import { schema } from '../../schema.js'
 import { createYedPlugin } from '../YedPlugin.js'
 
-import('codemirror/mode/javascript/javascript.js')
-import('codemirror/mode/markdown/markdown.js')
+import * as promise from 'lib0/promise.js'
+import * as map from 'lib0/map.js'
+
+const wrapOpts = (p, opt) => p.then(() => promise.resolve(opt))
+
+const importedLangs = new Map()
+const importLangFunctions = {
+  json: () => wrapOpts(import('codemirror/mode/javascript/javascript.js'), { name: 'javascript', json: true }),
+  js: () => wrapOpts(import('codemirror/mode/javascript/javascript.js'), { name: 'javascript', typescript: true }),
+  c: () => wrapOpts(import('codemirror/mode/clike/clike.js'), { name: 'clike' }),
+  md: () => wrapOpts(import('codemirror/mode/markdown/markdown.js'), { name: 'markdown' }),
+  php: () => wrapOpts(import('codemirror/mode/php/php.js'), { name: 'php' }),
+  html: () => wrapOpts(import('codemirror/mode/htmlmixed/htmlmixed.js'), { name: 'htmlmixed' }),
+}
+
+const importLang = lang => {
+  const importFunction = importLangFunctions[lang]
+  if (importFunction != null) {
+    return map.setIfUndefined(importedLangs, lang, importFunction)
+  } else {
+    return null
+  }
+}
+
+const importedLanguages = new Set()
 
 export class CodeBlockView {
   constructor (node, view, getPos) {
@@ -32,8 +55,7 @@ export class CodeBlockView {
       value: this.node.textContent,
       lineNumbers: true,
       extraKeys: this.codeMirrorKeymap(),
-      viewportMargin: Infinity,
-      mode: 'javascript'
+      viewportMargin: Infinity
     })
 
     // The editor's outer node is our DOM representation
@@ -45,17 +67,24 @@ export class CodeBlockView {
       ]),
       dom.element('datalist', [pair.create('id', 'yed-codeblock-languages')], [
         dom.element('option', [pair.create('value', ' ')], [dom.text('None')]),
-        dom.element('option', [pair.create('value', 'javascript')], [dom.text('Javascript')]),
-        dom.element('option', [pair.create('value', 'markdown')], [dom.text('Markdown')]),
-        dom.element('option', [pair.create('value', 'clike')], [dom.text('C / C++')]),
+        dom.element('option', [pair.create('value', 'js')], [dom.text('Javascript')]),
+        dom.element('option', [pair.create('value', 'json')], [dom.text('JSON')]),
+        dom.element('option', [pair.create('value', 'md')], [dom.text('Markdown')]),
+        dom.element('option', [pair.create('value', 'c')], [dom.text('C / C++')]),
         dom.element('option', [pair.create('value', 'php')], [dom.text('PHP')]),
-        dom.element('option', [pair.create('value', 'htmlmixed')], [dom.text('HTML')]),
+        dom.element('option', [pair.create('value', 'html')], [dom.text('HTML')]),
       ])
     ])
     dom.append(this.dom, [this.languageSelector])
     this.languageSelector.querySelector('input').addEventListener('change', ev => {
       const lang = ev.target.value
-      this.cm.setOption('mode', lang)
+      const imp = importLang(lang)
+      if (imp) {
+        imp.then(mode => {
+          importedLanguages.add(lang)
+          this.cm.setOption('mode', mode)
+        })
+      }
     })
     // CodeMirror needs to be in the DOM to properly initialize, so
     // schedule it to update itself
