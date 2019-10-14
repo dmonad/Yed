@@ -29,6 +29,7 @@ const importLangFunctions = {
   md: () => wrapOpts(import('codemirror/mode/markdown/markdown.js'), { name: 'markdown' }),
   php: () => wrapOpts(import('codemirror/mode/php/php.js'), { name: 'php' }),
   html: () => wrapOpts(import('codemirror/mode/htmlmixed/htmlmixed.js'), { name: 'htmlmixed' }),
+  ' ': () => promise.resolve({ name: '' })
 }
 
 const importLang = lang => {
