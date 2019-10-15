@@ -56,14 +56,16 @@ export class CodeBlockView {
       value: this.node.textContent,
       lineNumbers: true,
       extraKeys: this.codeMirrorKeymap(),
-      viewportMargin: Infinity
+      viewportMargin: Infinity,
+      theme: 'moxer'
     })
 
     // The editor's outer node is our DOM representation
-    this.dom = this.cm.getWrapperElement()
+    this.dom = dom.element('div', [pair.create('class', 'yed-codeblock')])
+    dom.append(this.dom, [this.cm.getWrapperElement()])
     this.languageSelector = dom.element('div', [pair.create('class', 'yed-codeblock-language-selector')], [
       dom.element('label', [], [
-        dom.text('Language'),
+        dom.text('Language: '),
         dom.element('input', [pair.create('placeholder', 'none'), pair.create('value', ''), pair.create('list', 'yed-codeblock-languages'), pair.create('name', 'codeblock-language')])
       ]),
       dom.element('datalist', [pair.create('id', 'yed-codeblock-languages')], [
@@ -84,6 +86,8 @@ export class CodeBlockView {
         imp.then(mode => {
           importedLanguages.add(lang)
           this.cm.setOption('mode', mode)
+          this.cm.refresh()
+          this.cm.focus()
         })
       }
     })

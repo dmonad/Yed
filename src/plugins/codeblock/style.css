@@ -1,22 +1,42 @@
 @import url('../../../node_modules/codemirror/lib/codemirror.css');
+@import url('../../../node_modules/codemirror/theme/moxer.css');
+
+.yed-codeblock {
+  position: relative;
+}
 
 .yed .CodeMirror {
   height: auto;
-  border: 1px solid red;
 }
 
 .yed-codeblock-language-selector {
+  line-height: 1.5em;
   position: absolute;
-  top: 0;
   right: 0;
+  top: -1.7em;
+  opacity: 0;
+  display: none;
+  background-color: #eee;
+  border-top-left-radius: .5em;
+  padding: .1em .4em;
+}
+
+.yed-codeblock-language-selector input {
+  background-color: inherit;
+  border: none;
   width: 5em;
-  height: 1.5em;
-  z-index: 2;
+  border-bottom: 1px solid black;
+}
+
+.CodeMirror-focused ~ .yed-codeblock-language-selector, .yed-codeblock:focus-within .yed-codeblock-language-selector {
+  display: block;
+  transition: opacity 200ms;
+  opacity: 1;
 }
 
 .yed-codeblock-language-selector > input, .yed-codeblock-selected-language {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   width: 5em;
   height: 1.5em;
