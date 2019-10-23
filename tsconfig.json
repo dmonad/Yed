@@ -42,6 +42,7 @@
       "yjs": ["node_modules/yjs/src/index.js"],
       "lib0/*": ["node_modules/lib0/*"],
       "lib0/map.js": ["node_modules/lib0/map.js"],
+      "lib0/dom.js": ["node_modules/lib0/dom.js"],
       "y-websocket": ["node_modules/y-websocket/src/y-websocket.js"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */

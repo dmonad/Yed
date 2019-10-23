@@ -18,9 +18,11 @@ import * as object from 'lib0/object.js'
 import { actions } from './actions.js'
 import { YedPlugin, CreateNodeViewFunction } from './plugins/YedPlugin.js'
 import { codeblockPlugin } from './plugins/codeblock/codeblock.js'
+import { placeholderPlugin } from './plugins/placeholder/placeholder.js'
 
 const defaultPlugins = [
-  codeblockPlugin
+  codeblockPlugin,
+  placeholderPlugin
 ]
 
 export { undo, redo }

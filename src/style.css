@@ -1,4 +1,5 @@
 @import url('./plugins/codeblock/style.css');
+@import url('./plugins/placeholder/placeholder.css');
 
 placeholder {
   display: inline;
@@ -167,5 +168,3 @@ li.ProseMirror-selectednode:after {
 }
 
 .yed p { margin-bottom: 1em }
-
-  
