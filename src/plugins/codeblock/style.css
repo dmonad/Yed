@@ -3,6 +3,7 @@
 
 .yed-codeblock {
   position: relative;
+  font-size: .7em;
 }
 
 .yed .CodeMirror {

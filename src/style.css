@@ -34,7 +34,6 @@ placeholder:after {
   top: -1.05em;
   font-size: 13px;
   background-color: rgb(250, 129, 0);
-  font-family: serif;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
@@ -51,6 +50,9 @@ placeholder:after {
   white-space: pre-wrap;
   -webkit-font-variant-ligatures: none;
   font-variant-ligatures: none;
+  font-family: 'yed-font', monospace;
+  font-size: 19px;
+  color: #3c3c3c;
 }
 
 .yed pre {
@@ -140,13 +142,12 @@ li.ProseMirror-selectednode:after {
 }
 
 .yed {
-  background: white;
-  color: black;
   background-clip: padding-box;
-  border-radius: 4px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
   padding: 5px 0;
   margin-bottom: 23px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 50em;
 }
 
 .yed p:first-child,
