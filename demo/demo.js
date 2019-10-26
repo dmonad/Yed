@@ -13,7 +13,7 @@ const yed = new Yed({
   container: /** @type {Element} */ (dom.getElementById('editor')),
   type,
   awareness: provider.awareness,
-  toolbar: /** @type {Element} */ (dom.getElementById('toolbar'))
+  toolbarInline: /** @type {Element} */ (dom.querySelector('.yed-toolbar-inline'))
 })
 
 document.body.insertBefore(yed.container, null)

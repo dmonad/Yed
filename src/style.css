@@ -1,5 +1,6 @@
 @import url('./plugins/codeblock/style.css');
 @import url('./plugins/placeholder/placeholder.css');
+@import url('./plugins/toolbar-inline/toolbar-inline.css');
 
 placeholder {
   display: inline;
