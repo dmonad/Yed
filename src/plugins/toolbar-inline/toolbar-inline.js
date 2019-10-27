@@ -44,12 +44,17 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
             const focusNode = selection && selection.focusNode
             const rect = getSelectionRect()
             if (focusNode && rect) {
-              const focusElement = /** @type {Element} */ (focusNode.nodeType === document.ELEMENT_NODE ? focusNode : focusNode.parentElement)
+              let focusElement = /** @type {Element} */ (focusNode)
+              while (focusElement.parentElement && focusElement.nodeType !== document.ELEMENT_NODE && focusElement.nodeName !== 'P') {
+                focusElement = focusElement.parentElement
+              }
               const focusElementRect = focusElement.getBoundingClientRect()
               const topAbove = focusElementRect.top - toolbarInline.getBoundingClientRect().height - 15
               const top = topAbove > 0 ? topAbove : focusElementRect.top + focusElementRect.height + 15
               const left = math.max(0, rect.left + toolbarRelativePos.left - toolbarInline.getBoundingClientRect().width / 2)
               toolbarInline.setAttribute('style', `top: ${top}px; left: ${left}px`)
+              toolbarInline.classList.toggle('yed-arrow-above', topAbove <= 0)
+              toolbarInline.classList.toggle('yed-arrow-below', topAbove > 0)
             } else {
               toolbarInline.toggleAttribute('show', false)
             }
@@ -58,20 +63,25 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
       }),
       props: {
         handleDOMEvents: {
-          mouseup: (view, event) => {
-            const state = view.state
-            const selection = state.selection
-            if (!selection.empty && view.hasFocus()) {
-              const rect = getSelectionRect()
-              if (rect) {
-                const left = /** @type {MouseEvent} */ (event).clientX - rect.left
-                view.dispatch(state.tr.setMeta(toolbarInlinePluginKey, { isVisible: true, rpos: { left } }))
-              }
-            }
-            return false
-          }
+          mouseup: handleSelectionClick,
+          doubleClick: handleSelectionClick
         }
       }
     })
   ]
 })
+
+const handleSelectionClick = (view, event) => {
+  setTimeout(() => {
+    const state = view.state
+    const selection = state.selection
+    if (!selection.empty && view.hasFocus()) {
+      const rect = getSelectionRect()
+      if (rect) {
+        const left = /** @type {MouseEvent} */ (event).clientX - rect.left
+        view.dispatch(state.tr.setMeta(toolbarInlinePluginKey, { isVisible: true, rpos: { left } }))
+      }
+    }
+  }, 0)
+  return false
+}

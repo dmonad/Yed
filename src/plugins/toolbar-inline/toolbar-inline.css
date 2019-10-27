@@ -4,6 +4,10 @@
   display: none;
 }
 
+.yed-toolbar-inline button > * {
+  pointer-events: none;
+}
+
 .yed-toolbar-inline[show] {
   display: block;
   z-index: 3;
