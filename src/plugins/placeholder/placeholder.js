@@ -12,8 +12,7 @@ export const placeholderPlugin = createYedPlugin({
       props: {
         decorations (state) {
           const doc = state.doc
-          const firstChild = doc.firstChild
-          if (firstChild && firstChild.isTextblock && firstChild.content.size == 0) {
+          if (doc.content.size < 3) {
             return DecorationSet.create(doc, [Decoration.widget(1, placeholderElement)])
           }
         }
