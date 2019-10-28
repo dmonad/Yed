@@ -88,7 +88,7 @@ export class Yed {
         const action = actions[actionName]
         if (action) {
           view.focus()
-          action(view.state, view.dispatch)
+          action.exec(view.state, view.dispatch)
           event.preventDefault()
         }
       }

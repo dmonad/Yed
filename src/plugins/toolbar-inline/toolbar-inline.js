@@ -19,7 +19,26 @@ const getSelectionRect = () => {
 }
 
 /**
- * @param {Element} toolbarInline
+ * Compute the top-offset of absEl to relParent.
+ *
+ * Only call this function if you are sure that absEl is a child of relParent
+ * and if relParent is a relatively positioned element!
+ *
+ * @param {HTMLElement} absEl
+ * @param {HTMLElement} relParent
+ * @return {number} The Top offset of absEl to relParent
+ */
+const computeTopOffsetTo = (absEl, relParent) => {
+  let offset = 0
+  do {
+    offset += absEl.offsetTop
+    absEl = /** @type {HTMLElement} */ (absEl.offsetParent)
+  } while (absEl !== relParent)
+  return offset
+}
+
+/**
+ * @param {HTMLElement} toolbarInline
  */
 export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
   plugins: [
@@ -37,26 +56,34 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
       view: _ => ({
         update: (view, prevState) => {
           const toolbarRelativePos = toolbarInlinePluginKey.getState(view.state).rpos 
-          const show = !!toolbarRelativePos && view.hasFocus()
-          toolbarInline.toggleAttribute('show', show)
-          if (show) {
+          const hover = !!toolbarRelativePos && view.hasFocus()
+          const toolbarActionButtons = dom.querySelectorAll(toolbarInline, 'button[yed-action]')
+          toolbarActionButtons.forEach(b => {
+            const actionName = b.getAttribute('yed-action')
+            const action = actionName && actions[actionName]
+            b.toggleAttribute('active', !!(action && action.isActive(view.state)))
+          })
+          toolbarInline.toggleAttribute('hover', hover)
+          if (hover) {
             const selection = getSelection()
             const focusNode = selection && selection.focusNode
             const rect = getSelectionRect()
             if (focusNode && rect) {
-              let focusElement = /** @type {Element} */ (focusNode)
-              while (focusElement.parentElement && focusElement.nodeType !== document.ELEMENT_NODE && focusElement.nodeName !== 'P') {
+              let focusElement = /** @type {HTMLElement} */ (focusNode)
+              while (focusElement.parentElement && (focusElement.nodeType !== document.ELEMENT_NODE || focusElement.nodeName !== 'P')) {
                 focusElement = focusElement.parentElement
               }
+              const focusElementOffsetTo = computeTopOffsetTo(focusElement, /** @type {HTMLElement} */ (toolbarInline.offsetParent))
               const focusElementRect = focusElement.getBoundingClientRect()
-              const topAbove = focusElementRect.top - toolbarInline.getBoundingClientRect().height - 15
-              const top = topAbove > 0 ? topAbove : focusElementRect.top + focusElementRect.height + 15
-              const left = math.max(0, rect.left + toolbarRelativePos.left - toolbarInline.getBoundingClientRect().width / 2)
+              const toolbarInlineRect = toolbarInline.getBoundingClientRect()
+              const topAbove = focusElementOffsetTo - toolbarInlineRect.height
+              const top = topAbove > 0 ? topAbove : focusElementOffsetTo + focusElementRect.height
+              const left = math.max(5, rect.left + toolbarRelativePos.left - toolbarInlineRect.width / 2)
               toolbarInline.setAttribute('style', `top: ${top}px; left: ${left}px`)
               toolbarInline.classList.toggle('yed-arrow-above', topAbove <= 0)
               toolbarInline.classList.toggle('yed-arrow-below', topAbove > 0)
             } else {
-              toolbarInline.toggleAttribute('show', false)
+              toolbarInline.toggleAttribute('hover', false)
             }
           }
         }

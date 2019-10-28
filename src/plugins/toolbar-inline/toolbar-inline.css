@@ -8,7 +8,7 @@
   pointer-events: none;
 }
 
-.yed-toolbar-inline[show] {
+.yed-toolbar-inline[hover] {
   display: block;
   z-index: 3;
 }
