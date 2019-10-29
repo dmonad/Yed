@@ -80,7 +80,7 @@ const minificationPlugins = process.env.PRODUCTION ? [terser({
 
 const plugins = [
   debugResolve,
-  optBuildResolve,
+  // optBuildResolve,
   nodeResolve({
     sourcemap: true,
     mainFields: ['module', 'browser', 'main'],

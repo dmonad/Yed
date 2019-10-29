@@ -70,7 +70,7 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
             const rect = getSelectionRect()
             if (focusNode && rect) {
               let focusElement = /** @type {HTMLElement} */ (focusNode)
-              while (focusElement.parentElement && (focusElement.nodeType !== document.ELEMENT_NODE || focusElement.nodeName !== 'P')) {
+              while (focusElement.parentElement && focusElement.parentElement !== view.dom && (focusElement.nodeType !== document.ELEMENT_NODE || focusElement.nodeName !== 'P')) {
                 focusElement = focusElement.parentElement
               }
               const focusElementOffsetTo = computeTopOffsetTo(focusElement, /** @type {HTMLElement} */ (toolbarInline.offsetParent))

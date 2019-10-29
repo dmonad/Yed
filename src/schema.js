@@ -1,9 +1,11 @@
 import { Schema } from 'prosemirror-model'
+import { tableNodes as createTableNodes } from 'prosemirror-tables'
+import * as object from 'lib0/object.js'
 
 const brDOM = ['br']
 
 const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
-  domAttrs = Object.assign({}, domAttrs)
+  domAttrs = object.assign({}, domAttrs)
   if (attrs.ychange !== null) {
     domAttrs.ychange_user = attrs.ychange.user
     domAttrs.ychange_state = attrs.ychange.state
@@ -163,5 +165,21 @@ export const marks = {
   }
 }
 
+const tableNodes = createTableNodes({
+  tableGroup: "block",
+  cellContent: "block+",
+  cellAttributes: {
+    background: {
+      default: null,
+      getFromDOM: dom => /** @type {HTMLElement} */ (dom).style.backgroundColor || null,
+      setDOMAttr: (value, attrs) => {
+        if (value) {
+          attrs.style = (attrs.style || "") + `background-color: ${value};`
+        }
+      }
+    }
+  }
+})
+
 // @ts-ignore
-export const schema = new Schema({ nodes, marks })
+export const schema = new Schema({ nodes: object.assign(nodes, tableNodes), marks })

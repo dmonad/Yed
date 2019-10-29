@@ -20,6 +20,7 @@ import { YedPlugin, CreateNodeViewFunction } from './plugins/YedPlugin.js'
 import { codeblockPlugin } from './plugins/codeblock/codeblock.js'
 import { placeholderPlugin } from './plugins/placeholder/placeholder.js'
 import { toolbarInlinePlugin } from './plugins/toolbar-inline/toolbar-inline.js'
+import { tablePlugin } from './plugins/table/table.js'
 
 export { undo, redo }
 
@@ -28,7 +29,7 @@ export { undo, redo }
  * @property {Y.XmlFragment} YedOptions.type
  * @property {Awareness} YedOptions.awareness
  * @property {Element} [YedOptions.container]
- * @property {Element} [YedOptions.toolbarInline]
+ * @property {HTMLElement} [YedOptions.toolbarInline]
  * @property {Array<YedPlugin>} [YedOptions.plugins]
  */
 
@@ -54,7 +55,8 @@ export class Yed {
     const defaultPlugins = [
       codeblockPlugin,
       placeholderPlugin,
-      toolbarInlinePlugin(toolbarInline)
+      toolbarInlinePlugin(toolbarInline),
+      tablePlugin
     ]
     defaultPlugins.forEach(plug => {
       plug.plugins.forEach(pmPlug => plugins.push(pmPlug))

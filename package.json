@@ -48,6 +48,7 @@
     "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.7.2",
     "prosemirror-state": "^1.2.4",
+    "prosemirror-tables": "^0.9.5",
     "prosemirror-view": "^1.11.4"
   }
 }

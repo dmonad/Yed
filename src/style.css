@@ -1,6 +1,9 @@
 @import url('./plugins/codeblock/style.css');
 @import url('./plugins/placeholder/placeholder.css');
 @import url('./plugins/toolbar-inline/toolbar-inline.css');
+@import url('./plugins/table/table.css');
+
+@import url('../node_modules/prosemirror-tables/style/tables.css');
 
 placeholder {
   display: inline;
