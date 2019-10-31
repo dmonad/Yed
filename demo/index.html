@@ -6,6 +6,45 @@
     <link rel=stylesheet href="../src/style.css">
     <link rel=stylesheet href="./font/font.css">
     <style>
+      .yed-toolbar-block {
+        color: #ddd;
+        white-space: normal;
+        display: inline-flex;
+      }
+      .yed-toolbar-block::before {
+        content: ' ';
+        white-space: pre;
+      }
+      .yed-toolbar-block > button {
+        cursor: pointer;
+        min-width: 2em;
+        padding: 0;
+        border: none;
+        font: inherit;
+        font-size: 1em;
+        color: inherit;
+        background-color: inherit;
+        vertical-align: middle;
+        outline: none;
+      }
+      .yed-toolbar-block > button:first-child {
+        margin-left: .3em;
+      }
+      .yed-toolbar-block > button > * {
+        vertical-align: middle;
+      }
+      .yed-toolbar-block > button > svg {
+        height: .9em;
+      }
+      .yed-toolbar-block > button:hover > svg {
+        padding-bottom: .1em;
+        border-bottom: solid .2em currentColor;
+        margin-bottom: -.3em;
+      }
+      .yed-toolbar-block > button:hover {
+        text-decoration: underline;
+      }
+
       .yed-toolbar-inline {
         background-color: #bbb;
         border-radius: .2rem;
@@ -79,6 +118,121 @@
     </style>
 </head>
 <body>
+  <div class="yed-toolbar-block">
+    <button type="button" yed-action="h2" title="H2" aria-label="h2">
+      <svg viewBox="0 0 135.47 135.47" xmlns="http://www.w3.org/2000/svg">
+        <g fill="currentColor" transform="translate(0 -161.53)">
+        <g transform="scale(.85854 1.1648)">
+          <path d="m111.41 243.95v3.7635h-51.184v-3.7635q7.6776-0.90324 9.7851-2.1076 3.7635-2.2581 3.7635-8.5808v-34.624h-36.28v34.624q0 6.1722 3.7635 8.4303 2.4086 1.3549 9.7851 2.2581v3.7635h-50.732v-3.7635q6.0216-0.7527 7.527-1.3549 5.2689-1.957 5.2689-9.3335v-72.861q0-6.4732-3.914-8.7313-2.2581-1.3549-8.8819-1.957v-3.7635h50.732v3.7635q-6.4732 0-9.183 1.5054-4.3657 2.4086-4.3657 9.183v31.162h36.28v-31.162q0-5.2689-2.4086-7.6776-3.0108-3.0108-11.14-3.0108v-3.7635h51.184v3.7635q-6.1721 0-9.0324 1.656-4.2151 2.4086-4.2151 9.0324v72.861q0 6.0216 3.613 8.2797 2.4086 1.5054 9.6346 2.4086z" stroke-width=".25807"/>
+        </g>
+        <g>
+          <path d="m135.2 272.25-3.4727 16.283h-32.103v-1.7749q7.6398-8.18 11.19-12.347 5.4019-6.328 7.7942-10.727 2.8553-5.1704 2.8553-9.5691 0-3.0868-1.5434-5.7106-2.4694-4.1672-7.6398-4.1672-2.3151 0-4.2444 1.0032-3.3183 1.6977-5.1704 5.9421h-2.1608q2.0836-5.8649 4.9389-9.4919 4.9389-6.2508 12.039-6.2508 5.0161 0 8.8746 2.7781 5.4019 3.8585 5.4019 11.653 0 3.164-1.0804 5.9421-2.0064 5.0932-7.717 10.572l-12.502 11.884h11.653q6.0964 0 7.717-0.92604 1.6206-1.0032 3.3183-5.0932z" stroke-width=".26458"/>
+        </g>
+        </g>
+      </svg>
+    </button>
+    <button type="button" yed-action="h3" title="H3" aria-label="h3">
+      <svg viewBox="0 0 135.47 135.47" xmlns="http://www.w3.org/2000/svg">
+        <g fill="currentColor" transform="translate(0 -161.53)">
+          <g transform="scale(.85854 1.1648)" aria-label="H">
+            <path d="m111.41 243.95v3.7635h-51.184v-3.7635q7.6776-0.90324 9.7851-2.1076 3.7635-2.2581 3.7635-8.5808v-34.624h-36.28v34.624q0 6.1722 3.7635 8.4303 2.4086 1.3549 9.7851 2.2581v3.7635h-50.732v-3.7635q6.0216-0.7527 7.527-1.3549 5.2689-1.957 5.2689-9.3335v-72.861q0-6.4732-3.914-8.7313-2.2581-1.3549-8.8819-1.957v-3.7635h50.732v3.7635q-6.4732 0-9.183 1.5054-4.3657 2.4086-4.3657 9.183v31.162h36.28v-31.162q0-5.2689-2.4086-7.6776-3.0108-3.0108-11.14-3.0108v-3.7635h51.184v3.7635q-6.1721 0-9.0324 1.656-4.2151 2.4086-4.2151 9.0324v72.861q0 6.0216 3.613 8.2797 2.4086 1.5054 9.6346 2.4086z" stroke-width=".25807"/>
+          </g>
+          <path d="m102.79 247.09-1.6206-0.92604q2.0836-4.553 6.0193-7.717 5.0161-4.09 11.267-4.09 5.8649 0 9.4148 2.6238 3.5498 2.5466 3.5498 7.7942 0 3.9357-1.9292 6.4051-1.2347 1.5434-4.4759 3.5498 4.553 1.6978 6.9453 5.4019 2.4694 3.627 2.4694 8.18 0 8.2572-6.5595 14.276-6.5595 5.9421-16.669 5.9421-4.9389 0-8.1029-1.6977-3.5498-1.9292-3.5498-5.4019 0-1.7749 1.3891-3.0096 1.4662-1.3119 3.3955-1.3119 3.3955 0 7.4083 3.7813 4.0128 3.7813 6.1736 3.7813 3.2411 0 5.2476-1.9293 2.4694-2.3923 2.4694-7.254 0-8.0257-7.9485-12.424-2.3923-1.3119-7.5627-3.0868v-1.3119q4.3987-1.3891 6.4051-2.8553 3.627-2.701 3.627-7.254 0-3.627-2.0064-5.7878-2.0064-2.1608-6.1736-2.1608-3.4727 0-6.1736 2.5466-1.3119 1.2347-3.0096 3.9357z" stroke-width=".26458"/>
+        </g>
+      </svg>
+    </button>
+    <button type="button" yed-action="table" title="Table" aria-label="table">
+      <!--
+        @license
+        The following SVG image (fa-table by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M464 32H48C21.49 32 0 53.49 0 80v352c0
+        26.51 21.49 48 48 48h416c26.51 0 48-21.49
+        48-48V80c0-26.51-21.49-48-48-48zM224
+        416H64v-96h160v96zm0-160H64v-96h160v96zm224
+        160H288v-96h160v96zm0-160H288v-96h160v96z"/>
+      </svg>
+    </button>
+    <button type="button" yed-action="list-ol" title="Ordered list" aria-label="ordered-list">
+      <!--
+        @license
+        The following SVG image (list-ol by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0
+        5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0
+        0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25
+        10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0
+        15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0
+        1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19
+        11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75
+        48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0
+        0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0
+        0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0
+        0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0
+        0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0
+        0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14
+        4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8
+        8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29
+        48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8
+        10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47
+        16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51
+        248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"></path>
+      </svg>
+    </button>
+    <button type="button" yed-action="list-ul" title="Unordered list" aria-label="unordered-list">
+      <!--
+        @license
+        The following SVG image (list-ul by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M48 48a48 48 0 1 0 48 48 48 48 0 0
+        0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48
+        48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16
+        16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16
+        16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0
+        160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0
+        16-16v-32a16 16 0 0 0-16-16z"></path>
+      </svg>
+    </button>
+    <button type="button" yed-action="list-todo" title="Todo list" aria-label="todo-list">
+      <!--
+        @license
+        The following SVG image (check-square by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path fill="currentColor" d="M400 32H48C21.49 32 0 53.49 0 80v352c0
+        26.51 21.49 48 48 48h352c26.51 0 48-21.49
+        48-48V80c0-26.51-21.49-48-48-48zm0
+        400H48V80h352v352zm-35.864-241.724L191.547 361.48c-4.705 4.667-12.303
+        4.637-16.97-.068l-90.781-91.516c-4.667-4.705-4.637-12.303.069-16.971l22.719-22.536c4.705-4.667
+        12.303-4.637 16.97.069l59.792 60.277 141.352-140.216c4.705-4.667
+        12.303-4.637 16.97.068l22.536 22.718c4.667 4.706 4.637 12.304-.068
+        16.971z"></path>
+      </svg>
+    </button>
+    <button type="button" yed-action="blockquote" title="Blockquote" aria-label="blockquote">
+      <!--
+        @license
+        The following SVG image (quote-left by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M464 256h-80v-64c0-35.3 28.7-64
+        64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160
+        71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5
+        48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64
+        64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6
+        0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5
+        48-48V304c0-26.5-21.5-48-48-48z"></path>
+      </svg>
+    </button>
+  </div>
   <div class="yed-toolbar-inline">
     <button type="button" yed-action="strong" title="Bold" aria-label="bold"><b>B</b></button>
     <button type="button" yed-action="em" title="Italic" aria-label="italic"><i>I</i></button>
@@ -110,7 +264,35 @@
       5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294
       10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg>
     </button>
-    <button type="button" yed-action="blockquote" title="Blockquote" aria-label="block-quote">“</button>
+    <button type="button" yed-action="highlight" title="Highlight" aria-label="highlight">
+      <!--
+        @license
+        The following SVG image (highlighter by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544 512">
+        <path fill="currentColor" d="M0 479.98L99.92
+        512l35.45-35.45-67.04-67.04L0 479.98zm124.61-240.01a36.592 36.592 0 0
+        0-10.79 38.1l13.05 42.83-50.93 50.94 96.23 96.23 50.86-50.86 42.74
+        13.08c13.73 4.2 28.65-.01 38.15-10.78l35.55-41.64-173.34-173.34-41.52
+        35.44zm403.31-160.7l-63.2-63.2c-20.49-20.49-53.38-21.52-75.12-2.35L190.55
+        183.68l169.77 169.78L530.27 154.4c19.18-21.74 18.15-54.63-2.35-75.13z">
+        </path>
+      </svg>
+    </button>
+    <button type="button" yed-action="comment" title="Comment" aria-label="comment">
+      <!--
+        @license
+        The following SVG image (fa-comment by Font Awesome) is "CC BY 4.0"-licensed.
+        https://fontawesome.com/license/free
+      -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4
+        95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8
+        480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4
+        0 256-93.1 256-208S397.4 32 256 32z"></path>
+      </svg>
+    </button>  
   </div>
   <div id="editor"></div>
   <script type="module" src="../dist/demo.js"></script>

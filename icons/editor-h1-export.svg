@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" version="1.1" viewBox="0 0 8.255 8.255" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-29.743 -110.44)">
+  <g aria-label="H">
+   <path d="m30 117.89v-6.6456h0.9095v2.8525h3.1936v-2.8525h0.95085v6.6456h-0.95085v-3.0076h-3.1936v3.0076z" stroke-width=".26458"/>
+  </g>
+  <g aria-label="1">
+   <path d="m36.645 117.89v-3.1333q-0.36897 0.32212-0.81993 0.42754v-0.42754q0.24598-0.082 0.43925-0.24598 0.19913-0.16984 0.33383-0.38654h0.5271v3.7658z" stroke-width=".26458"/>
+  </g>
+ </g>
+</svg>

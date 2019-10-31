@@ -1,0 +1,14 @@
+
+.yed-toolbar-block {
+  width: 0;
+  overflow: hidden;
+  transition: ease-out width 1.3s;
+}
+
+.yed-toolbar-block button > * {
+  pointer-events: none;
+}
+
+.yed-toolbar-block[visible] {
+  width: 100%;
+}
