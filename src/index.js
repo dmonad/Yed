@@ -14,6 +14,7 @@ import { gapCursor } from 'prosemirror-gapcursor'
 import { inputrules } from './inputrules.js'
 
 import * as object from 'lib0/object.js'
+import * as logging from 'lib0/logging.js'
 
 import { actions } from './actions.js'
 import { YedPlugin, CreateNodeViewFunction } from './plugins/YedPlugin.js'
@@ -22,6 +23,7 @@ import { placeholderPlugin } from './plugins/placeholder/placeholder.js'
 import { toolbarInlinePlugin } from './plugins/toolbar-inline/toolbar-inline.js'
 import { toolbarBlockPlugin } from './plugins/toolbar-block/toolbar-block.js'
 import { tablePlugin } from './plugins/table/table.js'
+import { log } from './lib.js'
 
 export { undo, redo }
 
@@ -95,6 +97,8 @@ export class Yed {
           view.focus()
           action.exec(view.state, view.dispatch)
           event.preventDefault()
+        } else if (actionName) {
+          log('Action ', logging.RED, '"' + actionName + '" ', logging.UNCOLOR, 'is not recognized.')
         }
       }
     })
