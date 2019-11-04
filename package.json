@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently 'rollup -wc' serve",
-    "dist": "npm run dist:css && npm run dist:css-min && npm run dist:js",
+    "clean": "rm -rf dist",
+    "dist": "npm run clean && mkdir dist && npm run dist:css && npm run dist:css-min && npm run dist:js",
     "dist:js": "PRODUCTION=true rollup -c",
     "dist:css": "cleancss --format beautify -o dist/style.css src/style.css",
     "dist:css-min": "cleancss -O2 -o dist/style.min.css src/style.css"
