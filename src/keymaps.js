@@ -4,7 +4,7 @@ import { wrapInList, splitListItem, liftListItem, sinkListItem } from 'prosemirr
 import { undo, redo } from 'y-prosemirror'
 import { undoInputRule } from 'prosemirror-inputrules'
 import * as env from 'lib0/environment.js'
-import { schema } from './schema.js'
+import { strong, em, code, ul, ol, li, blockquote, br, hr, codeblock, heading, p } from './schema.js'
 
 export const keymaps = {}
 const bind = (key, cmd) => {
@@ -23,27 +23,25 @@ bind('Mod-BracketLeft', lift)
 bind('Escape', selectParentNode)
 
 // bold
-bind('Mod-b', toggleMark(schema.marks.strong))
-bind('Mod-B', toggleMark(schema.marks.strong))
+bind('Mod-b', toggleMark(strong))
+bind('Mod-B', toggleMark(strong))
 
 // italic
-bind('Mod-i', toggleMark(schema.marks.em))
-bind('Mod-I', toggleMark(schema.marks.em))
+bind('Mod-i', toggleMark(em))
+bind('Mod-I', toggleMark(em))
 
 // code
-bind('Mod-`', toggleMark(schema.marks.code))
+bind('Mod-`', toggleMark(code))
 
 // bullet list
-bind('Shift-Ctrl-8', wrapInList(schema.nodes.bullet_list))
+bind('Shift-Ctrl-8', wrapInList(ul))
 
 // ordered list
-bind('Shift-Ctrl-9', wrapInList(schema.nodes.ordered_list))
+bind('Shift-Ctrl-9', wrapInList(ol))
 
 // blockquote
-bind('Ctrl->', wrapIn(schema.nodes.blockquote))
+bind('Ctrl->', wrapIn(blockquote))
 
-// hard-break in paragraph
-const br = schema.nodes.hard_break
 const brcmd = chainCommands(exitCode, (state, dispatch) => {
   dispatch(state.tr.replaceSelectionWith(br.create()).scrollIntoView())
   return true
@@ -52,18 +50,17 @@ bind('Mod-Enter', brcmd)
 bind('Shift-Enter', brcmd)
 if (env.isMac) bind('Ctrl-Enter', brcmd)
 
-const listitem = schema.nodes.list_item
-bind('Enter', splitListItem(listitem))
-bind('Mod-[', liftListItem(listitem))
-bind('Mod-]', sinkListItem(listitem))
+bind('Enter', splitListItem(li))
+bind('Mod-[', liftListItem(li))
+bind('Mod-]', sinkListItem(li))
 
-bind('Shift-Ctrl-0', setBlockType(schema.nodes.paragraph))
+bind('Shift-Ctrl-0', setBlockType(p))
 
-bind('Shift-Ctrl-\\', setBlockType(schema.nodes.codeblock))
+bind('Shift-Ctrl-\\', setBlockType(p))
 
-for (let i = 1; i <= 6; i++) bind('Shift-Ctrl-' + i, setBlockType(schema.nodes.heading, { level: i }))
+for (let i = 1; i <= 6; i++) bind('Shift-Ctrl-' + i, setBlockType(heading, { level: i }))
 
 bind('Mod-_', (state, dispatch) => {
-  dispatch(state.tr.replaceSelectionWith(schema.nodes.horizontal_rule.create()).scrollIntoView())
+  dispatch(state.tr.replaceSelectionWith(hr.create()).scrollIntoView())
   return true
 })

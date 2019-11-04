@@ -58,7 +58,7 @@ export class Yed {
     const nodeViews = {}
     const defaultPlugins = [
       codeblockPlugin,
-      // placeholderPlugin,
+      placeholderPlugin,
       toolbarInlinePlugin(toolbarInline),
       toolbarBlockPlugin(toolbarBlock),
       tablePlugin

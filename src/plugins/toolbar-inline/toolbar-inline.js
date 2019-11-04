@@ -1,10 +1,6 @@
 import { createYedPlugin } from '../YedPlugin.js'
-import { actions } from '../../actions.js'
+import { updateToolbarActionButtonStates } from '../../actions.js'
 import { Plugin, PluginKey } from 'prosemirror-state'
-import { DecorationSet, Decoration, EditorView } from 'prosemirror-view'
-import * as dom from 'lib0/dom.js'
-import * as pair from 'lib0/pair.js'
-import * as object from 'lib0/object.js'
 import * as math from 'lib0/math.js'
 
 export const toolbarInlinePluginKey = new PluginKey('toolbar-inline')
@@ -57,12 +53,7 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
         update: (view, prevState) => {
           const toolbarRelativePos = toolbarInlinePluginKey.getState(view.state).rpos 
           const hover = !!toolbarRelativePos && view.hasFocus()
-          const toolbarActionButtons = dom.querySelectorAll(toolbarInline, 'button[yed-action]')
-          toolbarActionButtons.forEach(b => {
-            const actionName = b.getAttribute('yed-action')
-            const action = actionName && actions[actionName]
-            b.toggleAttribute('active', !!(action && action.isActive(view.state)))
-          })
+          updateToolbarActionButtonStates(toolbarInline, view.state)
           toolbarInline.toggleAttribute('hover', hover)
           if (hover) {
             const selection = getSelection()

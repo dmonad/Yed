@@ -2,7 +2,7 @@ import {
   inputRules, wrappingInputRule, textblockTypeInputRule, smartQuotes, emDash, ellipsis
 } from 'prosemirror-inputrules'
 
-import { schema } from './schema.js'
+import { schema, blockquote, ol, ul, codeblock, heading } from './schema.js'
 
 // : (NodeType) → InputRule
 // Given a blockquote node type, returns an input rule that turns `"> "`
@@ -45,10 +45,10 @@ export function headingRule (nodeType, maxLevel) {
 }
 
 const rules = smartQuotes.concat(ellipsis, emDash)
-rules.push(blockQuoteRule(schema.nodes.blockquote))
-rules.push(orderedListRule(schema.nodes.ordered_list))
-rules.push(bulletListRule(schema.nodes.bullet_list))
-rules.push(codeBlockRule(schema.nodes.codeblock))
-rules.push(headingRule(schema.nodes.heading, 6))
+rules.push(blockQuoteRule(blockquote))
+rules.push(orderedListRule(ol))
+rules.push(bulletListRule(ul))
+rules.push(codeBlockRule(codeblock))
+rules.push(headingRule(heading, 6))
 
 export const inputrules = inputRules({ rules })

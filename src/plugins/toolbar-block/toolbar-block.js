@@ -1,7 +1,8 @@
 import { createYedPlugin, YedPlugin } from '../YedPlugin.js'
 import { Plugin } from 'prosemirror-state'
 import { DecorationSet, Decoration } from 'prosemirror-view'
-import { schema } from '../../schema.js'
+import { p } from '../../schema.js'
+import { updateToolbarActionButtonStates } from '../../actions.js'
 import * as dom from 'lib0/dom.js'
 import * as pair from 'lib0/pair.js'
 
@@ -17,7 +18,8 @@ export const toolbarBlockPlugin = toolbarBlockElement => createYedPlugin({
           const doc = state.doc
           const sel = state.selection
           const $to = sel.$to
-          if (sel.empty && $to.parent.nodeSize === 2 && $to.parent.type === schema.nodes.paragraph) {
+          if (sel.empty && $to.parent.nodeSize === 2 && $to.parent.type === p) {
+            updateToolbarActionButtonStates(toolbarBlockElement, state)
             setTimeout(() => {
               toolbarBlockElement.toggleAttribute('visible', true);
             }, 150)
