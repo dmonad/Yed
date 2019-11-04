@@ -1,6 +1,6 @@
 {
   "name": "yed",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Yet another editor",
   "main": "index.js",
   "scripts": {
@@ -52,5 +52,13 @@
     "prosemirror-state": "^1.2.4",
     "prosemirror-tables": "^0.9.5",
     "prosemirror-view": "^1.11.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmonad/Yed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dmonad/Yed/issues"
+  },
+  "homepage": "https://github.com/dmonad/Yed#readme"
 }
