@@ -1,11 +1,10 @@
 import { wrapIn, setBlockType, chainCommands, toggleMark, exitCode,
   joinUp, joinDown, lift, selectParentNode, markApplies } from 'prosemirror-commands'
+import { TextSelection } from 'prosemirror-state'
 
 import * as dom from 'lib0/dom.js'
 
-import { createTable } from './plugins/table/table.js'
-
-import { heading, h1, strong, em, codeblock, ul, ol } from './schema.js'
+import { heading, h1, strong, em, codeblock, ul, ol, table, table_cell, table_header, table_row } from './schema.js'
 
 class Action {
   /**
@@ -44,6 +43,40 @@ const createSetBlockTypeAction = (nodeType, attrs) => createAction(
   }
 )
 
+export const createReplaceBlockAction = (block, selOffset) => createAction(
+  (state, dispatch) => {
+    const { $to } = state.selection
+    const depth = $to.depth
+    const indexAfter = $to.index(depth - 1)
+    const can = $to.node(depth - 1).canReplaceWith(indexAfter, indexAfter, block.type)
+    if (can && dispatch) {
+      const insertPos = $to.before(depth)
+      const tr = state.tr.insert(insertPos, block)
+      tr.setSelection(TextSelection.create(tr.doc, insertPos + selOffset))
+      dispatch(tr)
+    }
+    return can
+  },
+  () => false
+)
+
+const defaultTable = table.createAndFill({}, [
+  table_row.createAndFill({}, [
+    table_header.createAndFill(),
+    table_header.createAndFill(),
+    table_header.createAndFill(),
+  ]),
+  table_row.createAndFill({}, [
+    table_cell.createAndFill(),
+    table_cell.createAndFill(),
+    table_cell.createAndFill()
+  ]),
+  table_row.createAndFill({}, [
+    table_cell.createAndFill(),
+    table_cell.createAndFill(),
+    table_cell.createAndFill()
+  ])
+])
 
 export const actions = {
   strong: createMarkToggleAction(strong),
@@ -53,10 +86,10 @@ export const actions = {
   h3: createSetBlockTypeAction(heading, { level: 3 }),
   h4: createSetBlockTypeAction(heading, { level: 4 }),
   h5: createSetBlockTypeAction(heading, { level: 5 }),
-  table: createAction(createTable, () => false),
+  table: createReplaceBlockAction(defaultTable, 3),
   codeblock: createSetBlockTypeAction(codeblock),
-  ul: createSetBlockTypeAction(ul),
-  ol: createSetBlockTypeAction(ol),
+  ul: createReplaceBlockAction(ul.createAndFill({}), 3),
+  ol: createReplaceBlockAction(ol.createAndFill({}), 3)
 }
 
 /**
