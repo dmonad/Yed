@@ -44,6 +44,7 @@
     "yjs": "^13.0.0-99"
   },
   "dependencies": {
+    "lib0": "^0.1.2",
     "prosemirror-commands": "^1.0.8",
     "prosemirror-example-setup": "^1.0.1",
     "prosemirror-inputrules": "^1.0.4",
