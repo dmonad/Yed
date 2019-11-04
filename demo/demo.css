@@ -1,0 +1,112 @@
+@import './font/font.css';
+
+.yed-toolbar-block {
+  color: #ddd;
+  white-space: normal;
+  display: inline-flex;
+}
+.yed-toolbar-block::before {
+  content: ' ';
+  white-space: pre;
+}
+.yed-toolbar-block > button {
+  cursor: pointer;
+  min-width: 2em;
+  padding: 0;
+  border: none;
+  font: inherit;
+  font-size: 1em;
+  color: inherit;
+  background-color: inherit;
+  vertical-align: middle;
+  outline: none;
+  margin-left: .3em;
+}
+.yed-toolbar-block > button > * {
+  vertical-align: middle;
+}
+.yed-toolbar-block > button > svg {
+  height: .9em;
+}
+.yed-toolbar-block > button:hover > svg {
+  padding-bottom: .1em;
+  border-bottom: solid .2em currentColor;
+  margin-bottom: -.3em;
+}
+.yed-toolbar-block > button:hover {
+  text-decoration: underline;
+}
+.yed-toolbar-block > button[disabled] {
+  display: none;
+}
+
+.yed-toolbar-inline {
+  background-color: #bbb;
+  border-radius: .2rem;
+  box-shadow: 0 0 .1rem #000;
+}
+.yed-toolbar-inline > button {
+  cursor: pointer;
+  background-color: #242424;
+  background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.89));
+  height: 2.7rem;
+  min-width: 2.7rem;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid #444;
+  border-right: 1px solid #000;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 2.7rem;
+  float: left;
+  box-sizing: border-box;
+}
+.yed-toolbar-inline > button:hover {
+  color: #ffa500;
+  background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.93));
+}
+.yed-toolbar-inline > button[active] {
+  background: linear-gradient(to bottom, #242424, rgba(0, 0, 0, 0.89));
+}
+.yed-toolbar-inline > button:first-child {
+  border-left: none;
+  border-top-left-radius: .2rem;
+  border-bottom-left-radius: .2rem;
+}
+.yed-toolbar-inline > button:last-child {
+  border-right: none;
+  border-top-right-radius: .2rem;
+  border-bottom-right-radius: .2rem;
+}
+.yed-toolbar-inline > button > svg {
+  height: .8rem;
+  margin-top: .93rem;
+}
+.yed-toolbar-inline.yed-toolbar-inline.yed-arrow-above {
+  /* remove arrow height from calculation */
+  margin-top: .4rem;
+}
+.yed-toolbar-inline.yed-toolbar-inline.yed-arrow-below {
+  /* remove arrow height from calculation */
+  margin-top: -.4rem;
+}
+.yed-toolbar-inline.yed-arrow-below::after, .yed-toolbar-inline.yed-arrow-above::after {
+  position: absolute;
+  content: '';
+  display: block;
+  height: 0;
+  width: 0;
+  left: 50%;
+  bottom: -.3rem;
+  margin-left: -.2rem;
+  border-left: .3rem solid transparent;
+  border-right: .3rem solid transparent;
+  border-top: .3rem solid #333; /* the gradient color roughly ends at color #333 */
+}
+.yed-toolbar-inline.yed-arrow-above::after {
+  border-top: none;
+  border-bottom: .3rem solid #242424; /* use the initial bottom color here */
+  bottom: initial;
+  top:-.3rem;
+}

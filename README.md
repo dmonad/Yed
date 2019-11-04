@@ -1,2 +1,2 @@
 # Yed
-> [WIP] A collaborative editor build with ProseMirror - [demo]()
+> [WIP] A collaborative editor built with ProseMirror - [demo]()
