@@ -1,12 +1,12 @@
 /* eslint-env browser */
 
 import * as Y from 'yjs'
-import { WebsocketProvider } from 'y-websocket'
+import { WebrtcProvider } from 'y-webrtc'
 import { Yed } from '../src/index.js'
 import * as dom from 'lib0/dom.js'
 
 const ydoc = new Y.Doc()
-const provider = new WebsocketProvider(`${location.protocol === 'http:' ? 'ws:' : 'wss:'}${location.host}`, 'prosemirror', ydoc)
+const provider = new WebrtcProvider('yed-public', ydoc)
 const type = /** @type {Y.XmlFragment} */ (ydoc.get('prosemirror', Y.XmlFragment))
 
 const yed = new Yed({
