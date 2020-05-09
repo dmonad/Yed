@@ -31,6 +31,9 @@ const debugResolve = {
       if (importee === 'yjs') {
         return `${process.cwd()}/../yjs/src/index.js`
       }
+      if (importee === 'd-components') {
+        return `${process.cwd()}/../${importee}/src/index.js`
+      }
       if (customModules.has(importee.split('/')[0])) {
         return `${process.cwd()}/../${importee}/src/${importee}.js`
       }
@@ -82,7 +85,6 @@ const plugins = [
   debugResolve,
   // optBuildResolve,
   nodeResolve({
-    sourcemap: true,
     mainFields: ['module', 'browser', 'main'],
     preferBuiltins: false
   }),

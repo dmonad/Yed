@@ -97,7 +97,7 @@ export const actions = {
  * @param {any} state
  */
 export const updateToolbarActionButtonStates = (toolbar, state) => {
-  dom.querySelectorAll(toolbar, 'button[yed-action]').forEach(b => {
+  dom.querySelectorAll(toolbar, '[yed-action]').forEach(b => {
     const actionName = b.getAttribute('yed-action')
     const action = actionName && actions[actionName]
     b.toggleAttribute('active', !!(action && action.isActive(state)))

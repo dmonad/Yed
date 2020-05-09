@@ -49,7 +49,7 @@ export const nodesSpec = {
     content: 'inline*',
     defining: true,
     parseDOM: [
-      { tag: 'h1' },
+      { tag: 'h1' }
     ],
     toDOM: () => ['h1', 0]
   },
@@ -69,7 +69,6 @@ export const nodesSpec = {
       { tag: 'h6', attrs: { level: 6 } }],
     toDOM: node => ['h' + node.attrs.level, calcYchangeDomAttrs(node.attrs), 0]
   },
-
 
   codeblock: {
     attrs: { ychange: ychangeDefault },

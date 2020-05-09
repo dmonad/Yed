@@ -2,36 +2,26 @@ import { createYedPlugin } from '../YedPlugin.js'
 import { updateToolbarActionButtonStates } from '../../actions.js'
 import { Plugin, PluginKey } from 'prosemirror-state'
 import * as math from 'lib0/math.js'
+import * as lib from '../../lib.js'
+import * as loop from 'lib0/eventloop.js'
 
 export const toolbarInlinePluginKey = new PluginKey('toolbar-inline')
 
 /**
+ * @param {any} view
  * @return {ClientRect | null}
  */
-const getSelectionRect = () => {
-  const sel = getSelection()
-  const range = sel && sel.getRangeAt(0)
+const getSelectionRect = view => {
+  const sel = getSelection(view)
+  const range = sel && sel.type !== 'None' && sel.getRangeAt(0)
   return range ? range.getBoundingClientRect() : null
 }
 
 /**
- * Compute the top-offset of absEl to relParent.
- *
- * Only call this function if you are sure that absEl is a child of relParent
- * and if relParent is a relatively positioned element!
- *
- * @param {HTMLElement} absEl
- * @param {HTMLElement} relParent
- * @return {number} The Top offset of absEl to relParent
+ * @param {any} view
+ * @return {Selection}
  */
-const computeTopOffsetTo = (absEl, relParent) => {
-  let offset = 0
-  do {
-    offset += absEl.offsetTop
-    absEl = /** @type {HTMLElement} */ (absEl.offsetParent)
-  } while (absEl !== relParent)
-  return offset
-}
+const getSelection = view => view._root.getSelection()
 
 /**
  * @param {HTMLElement} toolbarInline
@@ -51,36 +41,44 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
       },
       view: _ => ({
         update: (view, prevState) => {
-          const toolbarRelativePos = toolbarInlinePluginKey.getState(view.state).rpos 
-          const hover = !!toolbarRelativePos && view.hasFocus()
-          updateToolbarActionButtonStates(toolbarInline, view.state)
-          toolbarInline.toggleAttribute('hover', hover)
+          const prevPluginState = toolbarInlinePluginKey.getState(prevState)
+          const toolbarRelativePos = toolbarInlinePluginKey.getState(view.state).rpos
+          const hover = !!toolbarRelativePos && lib.isEditorFocused(view)
+          let showToolbarInline = false
+          updateToolbarActionButtonStates(toolbarInline.shadowRoot, view.state)
           if (hover) {
-            const selection = getSelection()
-            const focusNode = selection && selection.focusNode
-            const rect = getSelectionRect()
-            if (focusNode && rect) {
-              let focusElement = /** @type {HTMLElement} */ (focusNode)
-              while (focusElement.parentElement && focusElement.parentElement !== view.dom && (focusElement.nodeType !== document.ELEMENT_NODE || focusElement.nodeName !== 'P')) {
-                focusElement = focusElement.parentElement
-              }
-              const focusElementOffsetTo = computeTopOffsetTo(focusElement, /** @type {HTMLElement} */ (toolbarInline.offsetParent))
-              const focusElementRect = focusElement.getBoundingClientRect()
+            const selRect = getSelectionRect(view)
+            const viewSelection = /** @type {any} */ (view.state.selection)
+            const textSelectionSlice = viewSelection.content().content
+            const textSelection = textSelectionSlice.textBetween(0, textSelectionSlice.size, '', '')
+            if (selRect && !viewSelection.empty && textSelection.length > 0) {
+              toolbarInline.toggleAttribute('hover', hover)
+              const offsetParentRect = /** @type {HTMLElement} */ (toolbarInline.offsetParent).getBoundingClientRect()
               const toolbarInlineRect = toolbarInline.getBoundingClientRect()
-              const topAbove = focusElementOffsetTo - toolbarInlineRect.height
-              const top = topAbove > 0 ? topAbove : focusElementOffsetTo + focusElementRect.height
-              const left = math.max(5, rect.left + toolbarRelativePos.left - toolbarInlineRect.width / 2)
-              toolbarInline.setAttribute('style', `top: ${top}px; left: ${left}px`)
-              toolbarInline.classList.toggle('yed-arrow-above', topAbove <= 0)
-              toolbarInline.classList.toggle('yed-arrow-below', topAbove > 0)
-            } else {
-              toolbarInline.toggleAttribute('hover', false)
+              const relTop = selRect.top - offsetParentRect.top
+              const topAbove = relTop - toolbarInlineRect.height
+              const printAbove = topAbove > 0 && (viewSelection.$anchor.path[1] === viewSelection.$head.path[1] || viewSelection.anchor >= viewSelection.head)
+              const top = printAbove ? topAbove : relTop + selRect.height
+              const left = selRect.left + toolbarRelativePos.left - toolbarInlineRect.width / 2 - offsetParentRect.left
+              // consider the case that left + toolbar.width > renderwidth && never render below left=0
+              const leftWidthAdjusted = math.max(0, math.min(left, offsetParentRect.width - toolbarInlineRect.width - 10))
+              toolbarInline.setAttribute('style', `top: ${top}px; left: ${leftWidthAdjusted}px`)
+              toolbarInline.classList.toggle('yed-arrow-above', !printAbove)
+              toolbarInline.classList.toggle('yed-arrow-below', printAbove)
+              showToolbarInline = true
             }
+          }
+          if (!showToolbarInline && prevPluginState.isVisible) {
+            setTimeout(() => {
+              toolbarInline.toggleAttribute('hover', showToolbarInline)
+              view.dispatch(view.state.tr.setMeta(toolbarInlinePluginKey, { isVisible: false, rpos: null }))
+            })
           }
         }
       }),
       props: {
         handleDOMEvents: {
+          // mousedown: handleSelectionClick,
           mouseup: handleSelectionClick,
           doubleClick: handleSelectionClick
         }
@@ -89,17 +87,20 @@ export const toolbarInlinePlugin = toolbarInline => createYedPlugin({
   ]
 })
 
+const selectionDebouncer = loop.createDebouncer(200)
+
 const handleSelectionClick = (view, event) => {
-  setTimeout(() => {
+  selectionDebouncer(() => {
     const state = view.state
     const selection = state.selection
-    if (!selection.empty && view.hasFocus()) {
-      const rect = getSelectionRect()
+    const pluginState = toolbarInlinePluginKey.getState(state)
+    if (!selection.empty && pluginState.rpos == null && view.hasFocus()) {
+      const rect = getSelectionRect(view)
       if (rect) {
         const left = /** @type {MouseEvent} */ (event).clientX - rect.left
         view.dispatch(state.tr.setMeta(toolbarInlinePluginKey, { isVisible: true, rpos: { left } }))
       }
     }
-  }, 0)
+  })
   return false
 }
