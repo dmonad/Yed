@@ -96,7 +96,7 @@ const plugins = [
 export default [{
   input: './demo/demo.js',
   output: {
-    dir: 'dist',
+    dir: './demo/dist',
     format: 'esm',
     sourcemap: true,
     globals: {

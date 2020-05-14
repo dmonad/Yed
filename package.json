@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently 'npm run watch' serve",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist demo/dist",
     "dist": "npm run clean && mkdir -p dist && npm run dist:css && npm run dist:css-min && npm run dist:js",
     "dist:js": "npm run dist:css-min && PRODUCTION=true rollup -c",
     "dist:css": "cleancss --format beautify -o dist/style.css src/style.css && echo \"export const style = \\``cat dist/style.css`\\`\" > dist/style.js",
