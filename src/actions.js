@@ -4,7 +4,7 @@ import { TextSelection } from 'prosemirror-state'
 
 import * as dom from 'lib0/dom.js'
 
-import { heading, h1, strong, em, codeblock, ul, ol, table, table_cell, table_header, table_row } from './schema.js'
+import { heading, h1, strong, em, codeblock, ul, ol, table, table_cell, table_header, table_row, link } from './schema.js'
 
 class Action {
   /**
@@ -64,7 +64,7 @@ const defaultTable = table.createAndFill({}, [
   table_row.createAndFill({}, [
     table_header.createAndFill(),
     table_header.createAndFill(),
-    table_header.createAndFill(),
+    table_header.createAndFill()
   ]),
   table_row.createAndFill({}, [
     table_cell.createAndFill(),
@@ -80,6 +80,7 @@ const defaultTable = table.createAndFill({}, [
 
 export const actions = {
   strong: createMarkToggleAction(strong),
+  link: createMarkToggleAction(link),
   em: createMarkToggleAction(em),
   h1: createSetBlockTypeAction(h1),
   h2: createSetBlockTypeAction(heading, { level: 2 }),
@@ -93,7 +94,7 @@ export const actions = {
 }
 
 /**
- * @param {HTMLElement} toolbar
+ * @param {HTMLElement|ShadowRoot} toolbar
  * @param {any} state
  */
 export const updateToolbarActionButtonStates = (toolbar, state) => {

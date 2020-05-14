@@ -65,6 +65,10 @@ placeholder:after {
   position: relative;
 }
 
+.yed-fake-selection {
+  background-color: #ddd;
+}
+
 .ProseMirror-hideselection *::selection { background: transparent; }
 .ProseMirror-hideselection *::-moz-selection { background: transparent; }
 .ProseMirror-hideselection { caret-color: transparent; }

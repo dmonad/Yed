@@ -144,14 +144,15 @@ export const nodesSpec = {
 const marksSpec = {
   link: {
     attrs: {
-      href: {},
+      href: { default: '#' },
       title: { default: null }
     },
     inclusive: false,
-    parseDOM: [{ tag: 'a[href]',
-      getAttrs (dom) {
-        return { href: dom.getAttribute('href'), title: dom.getAttribute('title') }
-      } }],
+    parseDOM: [{
+      tag: 'a[href]',
+      getAttrs: dom =>
+        ({ href: dom.getAttribute('href'), title: dom.getAttribute('title') })
+    }],
     toDOM: node => ['a', node.attrs, 0]
   },
 

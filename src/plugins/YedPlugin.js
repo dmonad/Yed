@@ -1,4 +1,4 @@
-import { PluginSpec } from 'prosemirror-state'
+import { PluginSpec, Transaction } from 'prosemirror-state'
 import { Node } from 'prosemirror-model'
 import { NodeView, EditorView } from 'prosemirror-view'
 
@@ -13,15 +13,17 @@ import { NodeView, EditorView } from 'prosemirror-view'
  * @typedef {object} YedPluginOptions
  * @property {Object<string,CreateNodeViewFunction>} [YedPluginOptions.nodeViews]
  * @property {Array<PluginSpec>} [YedPluginOptions.plugins]
+ * @property {function(Transaction, EditorView)|null} [YedPluginOptions.trTransformer]
  */
 
 export class YedPlugin {
   /**
    * @param {YedPluginOptions} opts
    */
-  constructor ({ nodeViews = {}, plugins = [] }) {
+  constructor ({ nodeViews = {}, plugins = [], trTransformer = null }) {
     this.nodeViews = nodeViews
     this.plugins = plugins
+    this.trTransformer = trTransformer
   }
 }
 

@@ -1,12 +1,8 @@
 
-import { Schema } from 'prosemirror-model'
 import { exitCode } from 'prosemirror-commands'
 import { undo, redo } from 'prosemirror-history'
 import { keymap } from 'prosemirror-keymap'
-import { EditorState, Selection, TextSelection } from 'prosemirror-state'
-import { EditorView } from 'prosemirror-view'
-import { DOMParser } from 'prosemirror-model'
-import { exampleSetup } from 'prosemirror-example-setup'
+import { TextSelection, Selection } from 'prosemirror-state'
 
 import * as dom from 'lib0/dom.js'
 import * as pair from 'lib0/pair.js'
@@ -63,10 +59,11 @@ export class CodeBlockView {
     // The editor's outer node is our DOM representation
     this.dom = dom.element('div', [pair.create('class', 'yed-codeblock')])
     dom.append(this.dom, [this.cm.getWrapperElement()])
+    const languageInput = dom.element('input', [pair.create('placeholder', 'none'), pair.create('value', ''), pair.create('list', 'yed-codeblock-languages'), pair.create('name', 'codeblock-language')])
     this.languageSelector = dom.element('div', [pair.create('class', 'yed-codeblock-language-selector')], [
       dom.element('label', [], [
         dom.text('Language: '),
-        dom.element('input', [pair.create('placeholder', 'none'), pair.create('value', ''), pair.create('list', 'yed-codeblock-languages'), pair.create('name', 'codeblock-language')])
+        languageInput
       ]),
       dom.element('datalist', [pair.create('id', 'yed-codeblock-languages')], [
         dom.element('option', [pair.create('value', ' ')], [dom.text('None')]),
@@ -79,7 +76,8 @@ export class CodeBlockView {
       ])
     ])
     dom.append(this.dom, [this.languageSelector])
-    this.languageSelector.querySelector('input').addEventListener('change', ev => {
+    languageInput.addEventListener('change', ev => {
+      // @ts-ignore
       const lang = ev.target.value
       const imp = importLang(lang)
       if (imp) {
@@ -113,6 +111,7 @@ export class CodeBlockView {
     })
     this.cm.on('focus', () => this.forwardSelection())
   }
+
   // }
   // nodeview_forwardSelection{
   forwardSelection () {
@@ -121,6 +120,7 @@ export class CodeBlockView {
     let selection = this.asProseMirrorSelection(state.doc)
     if (!selection.eq(state.selection)) { this.view.dispatch(state.tr.setSelection(selection)) }
   }
+
   // }
   // nodeview_asProseMirrorSelection{
   asProseMirrorSelection (doc) {
@@ -129,6 +129,7 @@ export class CodeBlockView {
     let head = this.cm.indexFromPos(this.cm.getCursor('head')) + offset
     return TextSelection.create(doc, anchor, head)
   }
+
   // }
   // nodeview_setSelection{
   setSelection (anchor, head) {
@@ -138,6 +139,7 @@ export class CodeBlockView {
       this.cm.posFromIndex(head))
     this.updating = false
   }
+
   // }
   // nodeview_valueChanged{
   valueChanged () {
@@ -150,6 +152,7 @@ export class CodeBlockView {
       this.view.dispatch(tr)
     }
   }
+
   // }
   // nodeview_keymap{
   codeMirrorKeymap () {
@@ -181,6 +184,7 @@ export class CodeBlockView {
     this.view.dispatch(this.view.state.tr.setSelection(selection).scrollIntoView())
     this.view.focus()
   }
+
   // }
   // nodeview_update{
   update (node) {

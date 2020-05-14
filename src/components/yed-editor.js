@@ -1,6 +1,7 @@
 
 import * as component from 'lib0/component.js'
 import * as dom from 'lib0/dom.js'
+import * as pair from 'lib0/pair.js'
 import { Yed } from '../Yed.js'
 
 import * as Y from 'yjs'
@@ -32,6 +33,8 @@ ${style}
         const editor = /** @type {HTMLDivElement} */ (dom.querySelector(/** @type {ShadowRoot} */ (component.shadowRoot), '#editor'))
         const toolbarBlock = /** @type {HTMLDivElement} */ (new BlockToolbar())
         const toolbarInline = /** @type {HTMLDivElement} */ (new InlineToolbar())
+        dom.setAttributes(toolbarInline, [pair.create('tabindex', '0')])
+        dom.appendChild(editor, toolbarInline)
         const yed = new Yed({
           container: editor,
           type,
@@ -40,9 +43,9 @@ ${style}
           toolbarBlock
         })
         // @ts-ignore
-        toolbarBlock.setState({ view: yed.view })
+        toolbarBlock.updateState({ view: yed.view })
         // @ts-ignore
-        toolbarInline.setState({ view: yed.view })
+        toolbarInline.updateState({ view: yed.view })
       }
     }
   })

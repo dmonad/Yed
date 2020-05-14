@@ -2,7 +2,7 @@ import * as dom from 'lib0/dom.js'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { Schema, Node, Mark } from 'prosemirror-model' // eslint-disable-line
-import { schema } from './schema.js'
+import { schema, p } from './schema.js'
 import { ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
 import { keymap } from 'prosemirror-keymap'
 // eslint-disable-next-line
@@ -23,6 +23,8 @@ import { toolbarBlockPlugin } from './plugins/toolbar-block/toolbar-block.js'
 import { tablePlugin } from './plugins/table/table.js'
 import { placeholderPlugin } from './plugins/placeholder/placeholder.js'
 import { hiddenWidgetsPlugin } from './plugins/hidden-widgets/hidden-widgets.js'
+import { fakeSelectionPlugin } from './plugins/fake-selection/fake-selection.js'
+import { getEditorSelection } from './lib.js'
 
 export { undo, redo }
 
@@ -43,7 +45,7 @@ export class Yed {
   constructor ({ type, awareness, container = dom.element('div'), toolbarInline = dom.element('div'), toolbarBlock = dom.element('div') }) {
     const plugins = [
       ySyncPlugin(type),
-      yCursorPlugin(awareness),
+      yCursorPlugin(awareness, { getSelection: getEditorSelection }),
       yUndoPlugin(),
       keymap(keymaps),
       inputrules,
@@ -56,12 +58,13 @@ export class Yed {
      */
     const nodeViews = {}
     const defaultPlugins = [
+      fakeSelectionPlugin,
       codeblockPlugin,
       placeholderPlugin,
       toolbarInlinePlugin(toolbarInline),
       toolbarBlockPlugin(toolbarBlock),
       tablePlugin,
-      hiddenWidgetsPlugin([toolbarInline])
+      // hiddenWidgetsPlugin([toolbarInline])
     ]
     defaultPlugins.forEach(plug => {
       plug.plugins.forEach(pmPlug => plugins.push(pmPlug))
@@ -69,6 +72,7 @@ export class Yed {
         nodeViews[name] = createView
       })
     })
+    const trTransformer = defaultPlugins.map(p => p.trTransformer).filter(t => t != null)
     const view = new EditorView(container, {
       attributes: {
         class: 'yed'
@@ -77,7 +81,11 @@ export class Yed {
         schema,
         plugins
       }),
-      nodeViews
+      nodeViews,
+      dispatchTransaction: tr => {
+        trTransformer.forEach(t => t(tr, view))
+        view.updateState(view.state.apply(tr))
+      }
     })
     document.body.addEventListener('mousedown', event => {
       let target = /** @type {Element | null} */ (event.target)
