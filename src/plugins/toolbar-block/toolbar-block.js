@@ -19,7 +19,7 @@ export const toolbarBlockPlugin = toolbarBlockElement => createYedPlugin({
           if (sel.empty && $to.parent.nodeSize === 2 && $to.parent.type === p) {
             updateToolbarActionButtonStates(toolbarBlockElement.shadowRoot, state)
             toolbarBlockElement.toggleAttribute('visible', true)
-            return DecorationSet.create(doc, [Decoration.widget($to.pos, toolbarBlockElement, { side: 10, key: 'yed-toolbar-block', ignoreSelection: true })])
+            return DecorationSet.create(doc, [Decoration.widget($to.pos, toolbarBlockElement, { side: 10, key: 'yed-toolbar-block', ignoreSelection: false })])
           } else {
             toolbarBlockElement.toggleAttribute('visible', false)
           }

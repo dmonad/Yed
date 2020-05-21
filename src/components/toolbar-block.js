@@ -48,6 +48,10 @@ export const defineYedToolbarBlock = component.createComponentDefiner(() => {
   }
   :host([visible]) {
     display: inline-flex;
+    display: none;
+  }
+  :host::before {
+    content: ' '
   }
   :host > * {
     color: #ddd;

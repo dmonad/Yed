@@ -2,7 +2,9 @@ import * as component from 'lib0/component.js'
 import { actions } from '../actions.js'
 import { log } from '../lib.js'
 import * as logging from 'lib0/logging.js'
+import * as dom from 'lib0/dom.js'
 import * as dcomps from 'd-components'
+import * as pair from 'lib0/pair.js'
 
 export const defineYedToolbarInline = component.createComponentDefiner(() => {
   dcomps.defineButton()
@@ -28,7 +30,7 @@ export const defineYedToolbarInline = component.createComponentDefiner(() => {
   </d-button>
 </div>
 <div id="link-menu">
-  <d-input-text id="link-menu-input" placeholder="https://" label="Show Label" show-label grow><a href="golem.de" slot="icon" target="_blank"><d-icon-link></d-icon-link></a></d-input-text>
+  <d-input-text id="link-menu-input" placeholder="https://" label="Show Label" show-label grow><a id="link-menu-link" href="#" slot="icon" target="_blank"><d-icon-link></d-icon-link></a></d-input-text>
 </div>
     `,
     style: `
@@ -39,6 +41,7 @@ export const defineYedToolbarInline = component.createComponentDefiner(() => {
   white-space: nowrap;
   width: fit-content;
   background-color: #242424;
+  outline: none;
 }
 :host > * {
   display: none;
@@ -159,27 +162,51 @@ export const defineYedToolbarInline = component.createComponentDefiner(() => {
       menu: 'string',
       hover: 'bool'
     },
+    childStates: {
+      '#link-menu-input': ({ linkMenuInput }) => ({ value: linkMenuInput })
+    },
+    onStateChange: (state, prevState, component) => {
+      if (state.menu === 'link-menu') {
+        // @ts-ignore
+        dom.setAttributes(dom.querySelector(component.shadowRoot, '#link-menu-link'), [pair.create('href', state.linkMenuInput || '#')])
+      }
+    },
     listeners: {
+      mousedown: interceptMouseEvents,
+      mouseup: interceptMouseEvents,
+      [dcomps.dinput]: (event, component) => {
+        if (/** @type {HTMLElement} */ (event.target).id === 'link-menu-input') {
+          component.updateState({ linkMenuInput: event.detail.value || null })
+        }
+      },
       [dcomps.buttonPressedEvent]: (event, component) => {
         const view = component.state.view
         if (event.target && /** @type {Element} */ (event.target).nodeType === document.ELEMENT_NODE && view) {
           const actionName = /** @type {Element} */ (event.target).getAttribute('yed-action')
           const action = actions[actionName]
           if (action) {
-            view.focus()
             const isExeced = action.exec(view.state, view.dispatch)
             if (isExeced && actionName === 'link') {
               component.updateState({ menu: 'link-menu' })
               // @ts-ignore
               component.shadowRoot.querySelector('#link-menu input').focus()
+            } else {
+              view.focus()
             }
-            // event.preventDefault()
           } else if (actionName) {
             log('Action ', logging.RED, '"' + actionName + '" ', logging.UNCOLOR, 'is not recognized.')
           }
         }
       }
     },
-    state: { view: null, menu: 'actions', hover: false }
+    state: { view: null, menu: 'actions', hover: false, linkMenuInput: null }
   })
 })
+
+const interceptMouseEvents = (event, component) => {
+  if (component.state.menu === 'actions') {
+    component.state.view.focus()
+  } else {
+    return false
+  }
+}

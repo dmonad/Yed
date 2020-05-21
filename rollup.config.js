@@ -45,27 +45,6 @@ const debugResolve = {
   }
 }
 
-const optBuildResolve = {
-  resolveId (importee) {
-    switch (importee) {
-      case 'prosemirror-keymap':
-      case 'prosemirror-commands':
-      case 'prosemirror-dropcursor':
-      case 'prosemirror-schema-list':
-        return `${process.cwd()}/node_modules/${importee}/src/${importee.slice(12)}.js`
-      case 'prosemirror-state':
-      case 'prosemirror-view':
-      case 'prosemirror-model':
-      case 'prosemirror-inputrules':
-      case 'prosemirror-gapcursor':
-      case 'prosemirror-transform':
-        return `${process.cwd()}/node_modules/${importee}/src/index.js`
-      default:
-        return null
-    }
-  }
-}
-
 const minificationPlugins = process.env.PRODUCTION ? [terser({
   module: true,
   compress: {
@@ -83,7 +62,6 @@ const minificationPlugins = process.env.PRODUCTION ? [terser({
 
 const plugins = [
   debugResolve,
-  // optBuildResolve,
   nodeResolve({
     mainFields: ['module', 'browser', 'main'],
     preferBuiltins: false
@@ -100,7 +78,7 @@ export default [{
     format: 'esm',
     sourcemap: true,
     globals: {
-      'crypto': 'null'
+      crypto: 'null'
     }
   },
   plugins
